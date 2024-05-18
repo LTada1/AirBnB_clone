@@ -1,8 +1,4 @@
 #!/usr/bin/python3
-import uuid
-from datetime import datetime
-
-
 """
 A basemodel for creating objects
 BaseModel(): Base Class
@@ -12,6 +8,8 @@ updated_at:updated time
 to_dict(): create dict representation of object
 
 """
+import uuid
+from datetime import datetime
 
 
 class BaseModel():
@@ -28,9 +26,11 @@ class BaseModel():
     def __str__(self):
         return f"[{self.__class__.__name__}] ({self.id}) ({self.__dict__})"
 
+    """ Update date and time """
     def save(self):
         self.update_at = datetime.now()
 
+    """ Create a dict representation of an object """
     def to_dict(self):
         return {
                 "__class__": self.__class__.__name__,
