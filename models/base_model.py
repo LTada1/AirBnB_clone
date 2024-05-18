@@ -2,13 +2,23 @@ import uuid
 from datetime import datetime
 
 
+"""
+A basemodel for creating objects
+BaseModel(): Base Class
+id: id attribute
+created_at: time of creation
+updated_at:updated time
+to_dict(): create dict representation of object
+
+"""
+
 class BaseModel():
     """public instance attributes"""
     id = None
     created_at = None
     updated_at = None
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = self.created_at
