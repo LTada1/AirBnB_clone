@@ -24,17 +24,21 @@ class BaseModel():
         self.updated_at = self.created_at
 
     def __str__(self):
+        """ return string """
         return f"[{self.__class__.__name__}] ({self.id}) ({self.__dict__})"
 
-    """ Update date and time """
     def save(self):
+        """ Update date and time """
         self.update_at = datetime.now()
 
-    """ Create a dict representation of an object """
     def to_dict(self):
+        """ Creat a dict repof an object """
         return {
                 "__class__": self.__class__.__name__,
                 "id": self.id,
                 "created_at": self.created_at.isoformat(),
                 "updated_at": self.updated_at.isoformat()
                 }
+
+
+if __name__ == "__main__":
