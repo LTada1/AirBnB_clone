@@ -19,9 +19,22 @@ class BaseModel():
     updated_at = None
 
     def __init__(self, *args, **kwargs):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == "create_at" or key == "update_st":
+                    setattr(self, key, datetime.fromisoformat(value))
+                else:
+                    setattr(self, key, value)
+                if "id" not in kwargs:
+                    self.id = str(uuid.uuid4())
+                if "created_at" not in kwargs:
+                    self.created_at = datetime.now()
+                if "updated_at" not in kwargs:
+                    self.updated_at = self.created_at
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
 
     def __str__(self):
         """ return string """
@@ -39,3 +52,7 @@ class BaseModel():
                 "created_at": self.created_at.isoformat(),
                 "updated_at": self.updated_at.isoformat()
                 }
+    @classmethod
+    def re_creaate(cls, in_dict):
+        """ Recreate object from a dict reprsentation """
+        return cls(in_dict)
