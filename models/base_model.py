@@ -21,6 +21,8 @@ class BaseModel():
     def __init__(self, *args, **kwargs):
         if kwargs:
             for key, value in kwargs.items():
+                if key == "__class__":
+                    continue
                 if key == "create_at" or key == "update_st":
                     setattr(self, key, datetime.fromisoformat(value))
                 else:
