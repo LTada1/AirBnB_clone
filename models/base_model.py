@@ -40,5 +40,4 @@ class BaseModel():
                 "updated_at": self.updated_at.isoformat()
                 }
 
-
 if __name__ == "__main__":
