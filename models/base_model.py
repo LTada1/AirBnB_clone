@@ -27,12 +27,12 @@ class BaseModel():
                     setattr(self, key, datetime.fromisoformat(value))
                 else:
                     setattr(self, key, value)
-                if "id" not in kwargs:
-                    self.id = str(uuid.uuid4())
-                if "created_at" not in kwargs:
-                    self.created_at = datetime.now()
-                if "updated_at" not in kwargs:
-                    self.updated_at = self.created_at
+            if "id" not in kwargs:
+                self.id = str(uuid.uuid4())
+            if "created_at" not in kwargs:
+                self.created_at = datetime.now()
+            if "updated_at" not in kwargs:
+                self.updated_at = self.created_at
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -51,13 +51,12 @@ class BaseModel():
         storage.save()
 
     def to_dict(self):
-        """ Creat a dict repof an object """
-        return {
-                "__class__": self.__class__.__name__,
-                "id": self.id,
-                "created_at": self.created_at.isoformat(),
-                "updated_at": self.updated_at.isoformat()
-                }
+         """ Creat a dict repof an object"""
+         obj_dict = self.__dict__.copy()
+         obj_dict["__class__"] = self.__class__.__name__
+         obj_dict["created_at"] = self.created_at.isoformat()
+         obj_dict["updated_at"] = self.updated_at.isoformat()
+         return obj_dict
     @classmethod
     def re_creaate(cls, in_dict):
         """ Recreate object from a dict reprsentation """

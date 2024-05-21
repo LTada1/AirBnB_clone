@@ -10,6 +10,7 @@ to_dict(): create dict representation of object
 """
 
 import json
+from os import path
 from models.base_model import BaseModel
 
 class FileStorage:
@@ -31,14 +32,13 @@ class FileStorage:
             json.dump(json_objects, json_file)
     def reload(self):
         "deserializes the JSON file to __objects"
-        try:
-            with open('FileStorage.__file_patth', 'r') as json_file:
-                json_objects = json.loads(json_file)
-                "BaseModel is imported here to avoid circular import"
+        if path.exists(self.__file_path):
+            with open(self.__file_path, 'r') as json_file:
+                json_objects = json.load(json_file)
+                """import model here to avoid circular import"""
                 from models.base_model import BaseModel
                 for key, value in json_objects.items():
-                    obj = BaseModel(**values)
-                    FileStorage.__objects[key] = obj
-        except FileNotFoundError:
-            pass
-
+                    cls_name = value["__class__"]
+                    if cls_name == "BaseModel":
+                        obj = BaseModel(**value)
+                    self.__objects[key] = obj
