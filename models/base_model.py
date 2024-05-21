@@ -45,6 +45,10 @@ class BaseModel():
     def save(self):
         """ Update date and time """
         self.update_at = datetime.now()
+        "Import here to avoid circular import"
+        from models import storage
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """ Creat a dict repof an object """
