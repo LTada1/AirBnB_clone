@@ -21,21 +21,24 @@ class FileStorage:
         self.__objects = __objects
     def all(self):
         "returns the dictionary __objects"
-        return
-                {
-                "__class": self.__class__.__name__.id
-                }
+        return BaseModel.__objects
     def new(self, obj):
+        "sets in __objects the obj with key <obj class name>.id"
+        key = f"{obj.__class__.__name__.{obj.id}"
+        BaseModel.__objects[key] = obj
     def save(self):
         "serializes __objects to the JSON file"
-        self.__file_path = json.dumps(__objects)
+        with open("BaseModel.__file_path", "w") as file_json:
+            json_objects = {key:obj.__dict__ for key, obj in BaseModel.__objects.items()}
+        json.dumps(json_file, file_json)
     def reload(self):
         "deserializes the JSON file to __objects"
-        with open("self.__file_path", 'r') as self.__ojects:
-            if not self.__objects:
-                pass
-            except FileNotFoundError:
-                pass
             try:
-                self.__objects = json.reloads(self.__file_path):wq!
+                with open('BaseModel.__file_patth', 'r') as json_file:
+                    json_objects = json.loads(json_file)
+                    for key, value in json_objects.items():
+                        obj = BaseModel(**values)
+                        BaseModel.__objects[key] = obj
+            except FileNotFoundError:
+            pass
 
