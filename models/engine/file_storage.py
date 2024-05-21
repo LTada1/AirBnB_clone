@@ -8,7 +8,7 @@ updated_at:updated time
 to_dict(): create dict representation of object
 
 """
-
+from datetime import datetime
 import json
 from os import path
 from models.base_model import BaseModel
@@ -28,17 +28,20 @@ class FileStorage:
     def save(self):
         "serializes __objects to the JSON file"
         json_objects = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
-        with open(FileStorage.__file_path, 'w') as json_file:
+        with open(FileStorage.__file_path, 'w', encoding="utf-8") as json_file:
             json.dump(json_objects, json_file)
     def reload(self):
         "deserializes the JSON file to __objects"
         if path.exists(self.__file_path):
-            with open(self.__file_path, 'r') as json_file:
-                json_objects = json.load(json_file)
-                """import model here to avoid circular import"""
-                from models.base_model import BaseModel
-                for key, value in json_objects.items():
-                    cls_name = value["__class__"]
-                    if cls_name == "BaseModel":
-                        obj = BaseModel(**value)
-                    self.__objects[key] = obj
+            with open(self.__file_path, 'r', encoding="utf-8") as json_file:
+                try:
+                    json_objects = json.load(json_file)
+                    """import model here to avoid circular import"""
+                    from models.base_model import BaseModel
+                    for key, value in json_objects.items():
+                        cls_name, json_objects = key.split('.')
+                        cls = eval(class_name)
+                        obj = cls(**value)
+                    FileStorage.__objects[key] = obj
+                except Exception:
+                    pass
